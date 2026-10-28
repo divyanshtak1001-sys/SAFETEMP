@@ -1,0 +1,3012 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SAFE-NET AI - Advanced Phishing Detection & Cyber Fraud Prevention System " />
+  <meta name="keywords"
+    content="phishing detection, cyber fraud detection, cybersecurity, email security, fraud prevention" />
+  <title>SAFE-NET - Intelligent Phishing & Cyber Fraud Detection</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+      overflow: auto;
+    }
+
+    body {
+      overflow-y: auto;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="%2300d4ff" opacity="0.8"/><circle cx="12" cy="12" r="8" fill="none" stroke="%2300d4ff" stroke-width="1" opacity="0.5"/><path d="M12 2 L12 8 M12 16 L12 22 M2 12 L8 12 M16 12 L22 12" stroke="%2300d4ff" stroke-width="1.5" opacity="0.6"/></svg>') 12 12, auto;
+    }
+
+    /* Custom cursor for interactive elements */
+    button:hover,
+    a:hover,
+    [role="button"]:hover,
+    .btn:hover,
+    input[type="button"]:hover {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0 L8 6 L3 10 L12 20 L14 18 L5 8 L9 3 Z" fill="%2300ff88" opacity="0.9"/><circle cx="6" cy="8" r="4" fill="none" stroke="%2300ff88" stroke-width="0.5" opacity="0.4"/></svg>') 8 8, pointer;
+    }
+
+    section {
+      display: block;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in forwards;
+      position: relative;
+      overflow: visible;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+      }
+
+      50% {
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes scanline {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(100%);
+      }
+    }
+
+    @keyframes neon-flicker {
+
+      0%,
+      19%,
+      21%,
+      23%,
+      25%,
+      54%,
+      56%,
+      100% {
+        text-shadow: 0 0 10px #00d4ff, 0 0 20px rgba(0, 212, 255, 0.8);
+      }
+
+      20%,
+      24%,
+      55% {
+        text-shadow: none;
+      }
+    }
+
+    @keyframes flip {
+      0% {
+        transform: rotateY(0deg);
+      }
+
+      100% {
+        transform: rotateY(360deg);
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes rainbow {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+
+      100% {
+        filter: hue-rotate(360deg);
+      }
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(10, 15, 35, 0.98);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+
+    body {
+      padding-top: 70px;
+    }
+
+    .nav-link {
+      transition: all 0.3s ease;
+      position: relative;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #00d4ff, #0099cc);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-link:hover {
+      color: #00d4ff;
+      transform: translateY(-3px);
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+
+    section {
+      scroll-margin-top: 70px;
+    }
+
+    .stat-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-15px) scale(1.05) perspective(1200px) rotateX(8deg);
+      animation: glow 1.5s ease-in-out infinite;
+      box-shadow: 0 30px 80px rgba(0, 212, 255, 0.25);
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .about-card {
+      transition: all 0.4s ease;
+      cursor: pointer;
+      transform-origin: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .about-card:hover {
+      transform: translateY(-20px) perspective(1000px) rotateX(10deg);
+      box-shadow: 0 30px 80px rgba(0, 212, 255, 0.3) !important;
+    }
+
+    .about-card:hover::before {
+      left: 100%;
+    }
+
+    .feature-item {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .feature-item::before {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateX(15px);
+    }
+
+    .feature-item:hover::before {
+      left: 100%;
+    }
+
+    .feature-icon {
+      display: inline-block;
+      transition: all 0.3s ease;
+      font-size: 24px;
+    }
+
+    .feature-item:hover .feature-icon {
+      animation: flip 0.6s ease-in-out;
+      color: #00d4ff;
+      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
+    }
+
+    .sample-btn {
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sample-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 212, 255, 0.3);
+      transition: left 0.4s ease;
+      z-index: 0;
+    }
+
+    .sample-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(0, 212, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .sample-btn:active::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .sample-btn:hover::before {
+      left: 100%;
+    }
+
+    .sample-btn:hover {
+      transform: scale(1.08) perspective(1000px) rotateY(-5deg);
+      box-shadow: 0 0 40px rgba(0, 212, 255, 0.8), 0 0 80px rgba(0, 212, 255, 0.3);
+      border: 1px solid rgba(0, 212, 255, 0.6);
+    }
+
+    .scenario-card {
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scenario-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .scenario-card:hover {
+      transform: translateY(-15px) scale(1.02) perspective(1200px) rotateX(6deg);
+      box-shadow: 0 30px 60px rgba(0, 212, 255, 0.25) !important;
+    }
+
+    .scenario-card:hover::before {
+      opacity: 1;
+      right: 0;
+      top: 0;
+    }
+
+    .scenario-indicators {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .indicator {
+      animation: slideIn 0.5s ease-out;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .indicator:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 8px rgba(255, 0, 85, 0.6));
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .primary-button,
+    .secondary-button {
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .primary-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(0, 212, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+      z-index: 0;
+    }
+
+    .primary-button:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .primary-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+    }
+
+    .primary-button:active {
+      transform: translateY(-2px);
+    }
+
+    .cta-button {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.6);
+    }
+
+    .cta-button:active {
+      transform: scale(0.98);
+    }
+
+    /* Advanced Get Started button */
+    #getStarted {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 153, 204, 0.1));
+      border: 1.5px solid rgba(0, 212, 255, 0.4);
+      color: #00d4ff;
+      padding: 8px 16px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      border-radius: 6px;
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+      font-size: 12px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    #getStarted::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+      z-index: 1;
+    }
+
+    #getStarted:hover::before {
+      left: 100%;
+    }
+
+    #getStarted::after {
+      content: '▶';
+      margin-left: 8px;
+      display: inline-block;
+      transition: transform 0.3s ease;
+      font-size: 10px;
+    }
+
+    #getStarted:hover::after {
+      transform: translateX(4px);
+    }
+
+    #getStarted:hover {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.25), rgba(0, 153, 204, 0.18));
+      border-color: rgba(0, 212, 255, 0.7);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.5), inset 0 0 20px rgba(0, 212, 255, 0.05);
+      transform: translateY(-3px);
+    }
+
+    /* Animated glow orb next to nav actions */
+    .nav-actions {
+      position: relative;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .submit-button {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 212, 255, 0.5);
+    }
+
+    .submit-button:hover::before {
+      left: 100%;
+    }
+
+    .submit-button:active {
+      transform: translateY(-1px);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      transform: translateY(-4px);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+    }
+
+    .form-group input:hover,
+    .form-group textarea:hover {
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    .form-message {
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .detection-demo-output {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in forwards;
+    }
+
+    .particle {
+      position: fixed;
+      pointer-events: none;
+    }
+
+    .hero {
+      perspective: 1000px;
+    }
+
+    .hero-content {
+      animation: slideInUp 0.8s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-title {
+      animation: neon-flicker 3s infinite;
+    }
+
+    .gradient-text {
+      background: linear-gradient(45deg, #00d4ff, #0099cc, #00d4ff);
+      background-size: 300% 300%;
+      animation: gradient-shift 3s ease infinite;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    @keyframes gradient-shift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .section-title {
+      animation: titleAnimation 0.8s ease-out;
+    }
+
+    @keyframes titleAnimation {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .contact-form {
+      animation: formAnimation 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes formAnimation {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .info-card {
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 50px rgba(0, 212, 255, 0.25) !important;
+    }
+
+    .info-card:hover::before {
+      left: 100%;
+    }
+
+    .info-icon {
+      display: inline-block;
+      font-size: 32px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .info-card:hover .info-icon {
+      animation: bounce 0.6s ease-in-out;
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+    }
+
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 15px;
+      background: rgba(0, 212, 255, 0.95);
+      color: white;
+      border-radius: 8px;
+      white-space: nowrap;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+    }
+
+    .tooltip:hover::after {
+      opacity: 1;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0, 212, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #00d4ff;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .threat-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(0, 212, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .threat-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00d4ff, #0099cc);
+      border-radius: 10px;
+      animation: expandWidth 1s ease-out forwards;
+    }
+
+    @keyframes expandWidth {
+      from {
+        width: 0;
+      }
+
+      to {
+        width: 100%;
+      }
+    }
+
+    .scan-effect {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scan-effect::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+      animation: scanline 2s linear infinite;
+      pointer-events: none;
+    }
+
+    .cyber-grid {
+      animation: none;
+      display: none;
+      /* Hide cyber grid element */
+    }
+
+    .text-primary {
+      animation: rainbow 6s linear infinite;
+    }
+
+    /* Cyber ambient: continuous motion, glitch, shake */
+    @keyframes microShake {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(0.01deg);
+      }
+
+      100% {
+        transform: translate3d(0, 0, 0) rotate(0.01deg);
+      }
+    }
+
+    @keyframes subtleGlitch {
+      0% {
+        text-shadow: 0 0 6px rgba(0, 212, 255, 0.06);
+        transform: translateX(0);
+      }
+
+      100% {
+        text-shadow: 0 0 6px rgba(0, 212, 255, 0.06);
+        transform: translateX(0);
+      }
+    }
+
+    .cyber-grid {
+      animation: none;
+      /* ambient shake disabled */
+    }
+
+    .hero-title {
+      animation: neon-flicker 3s infinite;
+      /* glitch shake removed */
+    }
+
+    /* Impact class triggers smooth focus state (no shake) */
+    .impact .hero,
+    .impact .nav-content,
+    .impact .modal-panel {
+      filter: brightness(1.05) drop-shadow(0 0 20px rgba(0, 212, 255, 0.1));
+      transition: filter 0.3s ease;
+    }
+
+    /* Scan overlay lines */
+    #scanLayer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2200;
+      mix-blend-mode: overlay;
+      opacity: 0.12;
+      background-image: linear-gradient(transparent 48%, rgba(0, 212, 255, 0.03) 50%, transparent 52%);
+      background-size: 100% 14px;
+      animation: scanline 3.5s linear infinite;
+    }
+
+    /* Glowing edges for realism */
+    .glow-edge {
+      box-shadow: 0 6px 40px rgba(0, 212, 255, 0.06), inset 0 0 30px rgba(0, 212, 255, 0.02);
+    }
+
+    /* Page loader screen - Ultra Advanced */
+    #pageLoader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: linear-gradient(135deg, #0a0f23 0%, #081824 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.8s cubic-bezier(.2, .9, .2, 1), visibility 0.8s ease;
+      overflow: hidden;
+    }
+
+    #pageLoader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Advanced particle effect */
+    .loader-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    .particle-small {
+      width: 2px;
+      height: 2px;
+      background: rgba(0, 212, 255, 0.3);
+    }
+
+    .particle-medium {
+      width: 4px;
+      height: 4px;
+      background: rgba(0, 212, 255, 0.5);
+    }
+
+    .particle-large {
+      width: 6px;
+      height: 6px;
+      background: rgba(0, 212, 255, 0.7);
+    }
+
+    .loader-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      background: radial-gradient(circle at center, rgba(0, 212, 255, 0.08), transparent 70%);
+      padding: 60px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(0, 212, 255, 0.15);
+      min-width: 340px;
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: borderGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes borderGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 20px rgba(0, 212, 255, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 30px rgba(0, 212, 255, 0.4);
+      }
+    }
+
+    /* Glitch effect for loader */
+    @keyframes glitch-text {
+      0% {
+        text-shadow: 3px 3px #ff0055, -3px -3px #00d4ff, 0 0 10px rgba(0, 212, 255, 0.5);
+      }
+
+      20% {
+        text-shadow: -3px 3px #00ff88, 3px -3px #ff6600, 0 0 15px rgba(255, 0, 85, 0.5);
+      }
+
+      40% {
+        text-shadow: 3px 0 #00d4ff, -3px 0 #ff0055, 0 0 12px rgba(0, 255, 136, 0.4);
+      }
+
+      60% {
+        text-shadow: 0 3px #00ff88, 0 -3px #ff6600, 0 0 18px rgba(255, 102, 0, 0.5);
+      }
+
+      100% {
+        text-shadow: 3px 3px #ff0055, -3px -3px #00d4ff, 0 0 10px rgba(0, 212, 255, 0.5);
+      }
+    }
+
+    @keyframes scan-line-move {
+      0% {
+        transform: translateY(-100%);
+      }
+
+      100% {
+        transform: translateY(100%);
+      }
+    }
+
+    @keyframes cyber-pulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: brightness(1) drop-shadow(0 0 8px rgba(0, 212, 255, 0.3));
+      }
+
+      50% {
+        opacity: 1;
+        filter: brightness(1.4) drop-shadow(0 0 20px rgba(0, 212, 255, 0.8));
+      }
+    }
+
+    @keyframes data-stream {
+      0% {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(10px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes bounce-in {
+      0% {
+        transform: scale(0.3) translateY(30px);
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      0% {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes rotate-orbit {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes matrix-rain {
+      0% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+    }
+
+    .loader-logo {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: cyber-pulse 0.8s ease-in-out infinite, bounce-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 0 16px rgba(0, 212, 255, 0.6));
+      position: relative;
+    }
+
+    .loader-logo::before {
+      content: '';
+      position: absolute;
+      inset: -15px;
+      border: 2px solid rgba(0, 212, 255, 0.2);
+      border-radius: 50%;
+      animation: rotate-orbit 4s linear infinite;
+    }
+
+    .loader-text {
+      color: #00d4ff;
+      font-size: 28px;
+      letter-spacing: 4px;
+      font-weight: 900;
+      text-transform: uppercase;
+      animation: glitch-text 3s ease-in-out infinite, slideUp 0.8s ease-out 0.2s both;
+      margin-bottom: 12px;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    }
+
+    .loader-status {
+      color: #6db3d8;
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+      animation: data-stream 1.5s ease-in-out infinite, slideUp 0.8s ease-out 0.3s both;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .scan-container {
+      position: relative;
+      height: 160px;
+      margin: 24px 0;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.03));
+      border: 1.5px solid rgba(0, 212, 255, 0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      animation: slideUp 0.8s ease-out 0.4s both;
+      box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.05);
+    }
+
+    .scan-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+      animation: scan-line-move 1.8s ease-in-out infinite;
+      box-shadow: 0 0 12px #00d4ff, 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+
+    .threat-items {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 0.6s ease-out 0.6s forwards;
+    }
+
+    .threat-item {
+      text-align: center;
+      flex: 1;
+      padding: 0 12px;
+      animation: bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation-fill-mode: both;
+    }
+
+    .threat-item:nth-child(1) {
+      animation-delay: 0.7s;
+    }
+
+    .threat-item:nth-child(2) {
+      animation-delay: 0.8s;
+    }
+
+    .threat-item:nth-child(3) {
+      animation-delay: 0.9s;
+    }
+
+    .threat-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+      animation: cyber-pulse 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+      transition: transform 0.3s ease;
+    }
+
+    .threat-label {
+      font-size: 11px;
+      color: #8cc9e0;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.95;
+      font-weight: 600;
+    }
+
+    .progress-wrapper {
+      margin: 24px 0;
+      animation: slideUp 0.8s ease-out 0.5s both;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #6db3d8;
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .loader-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(0, 212, 255, 0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.05);
+    }
+
+    .loader-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #00d4ff, #0099cc, #00ff88, #0099cc);
+      animation: loadProgress 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+      width: 40%;
+      box-shadow: 0 0 12px #00d4ff, inset 0 0 8px rgba(0, 255, 136, 0.3);
+      border-radius: 12px;
+    }
+
+    @keyframes loadProgress {
+      0% {
+        width: 8%;
+      }
+
+      25% {
+        width: 35%;
+      }
+
+      50% {
+        width: 65%;
+      }
+
+      75% {
+        width: 85%;
+      }
+
+      100% {
+        width: 95%;
+      }
+    }
+
+    .loader-footer {
+      font-size: 12px;
+      color: #4a8fa3;
+      letter-spacing: 1px;
+      margin-top: 20px;
+      animation: slideUp 0.8s ease-out 0.7s both;
+      font-weight: 500;
+    }
+
+    .footer-item {
+      display: inline-block;
+      margin: 0 8px;
+    }
+
+    .footer-item::before {
+      content: '◆ ';
+      color: #00d4ff;
+      margin-right: 4px;
+    }
+
+    .footer-item.active {
+      color: #00d4ff;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+    }
+
+    /* Background scan effect for loader */
+    .loader-bg-scan {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0.3;
+    }
+
+    .scan-bg-line {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+      animation: scan-line-move 4s linear infinite;
+      box-shadow: 0 0 8px rgba(0, 212, 255, 0.1);
+    }
+
+    /* Sample tooltip */
+    #sampleTooltip {
+      position: fixed;
+      z-index: 3000;
+      pointer-events: none;
+      background: rgba(4, 12, 18, 0.96);
+      color: #cdefff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.06);
+      transform: translate(-50%, -120%);
+      opacity: 0;
+      transition: opacity 0.12s ease, transform 0.12s ease;
+      white-space: nowrap;
+    }
+
+    #sampleTooltip.visible {
+      opacity: 1;
+      transform: translate(-50%, -140%);
+    }
+
+    /* Ultra transitions: page mask reveal */
+    #pageMask {
+      position: fixed;
+      inset: 0;
+      z-index: 2500;
+      pointer-events: none;
+      display: block;
+    }
+
+    #pageMask .maskCircle {
+      position: absolute;
+      left: var(--mx, 50%);
+      top: var(--my, 50%);
+      width: 40vmax;
+      height: 40vmax;
+      transform: translate(-50%, -50%) scale(0);
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(0, 212, 255, 0.12), rgba(0, 80, 100, 0.06) 30%, rgba(0, 0, 0, 0.0) 60%);
+      transition: transform 0.5s cubic-bezier(.2, .9, .2, 1), opacity 0.35s;
+      opacity: 0;
+      will-change: transform, opacity;
+      mix-blend-mode: screen;
+    }
+
+    #pageMask.revealing .maskCircle {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    /* Page transition overlay */
+    #pageTransition {
+      position: fixed;
+      inset: 0;
+      z-index: 2400;
+      background: linear-gradient(135deg, #0a0f23 0%, #081824 100%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(.25, .46, .45, .94), visibility 0.4s ease;
+    }
+
+    #pageTransition.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* Threat Info Popup Styles */
+    #threatInfoPopup {
+      position: fixed;
+      z-index: 5000;
+      background: linear-gradient(135deg, rgba(6, 10, 18, 0.98), rgba(8, 14, 24, 0.97));
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 500px;
+      min-width: 400px;
+      backdrop-filter: blur(12px) saturate(150%);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 212, 255, 0.15);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+
+    #threatInfoPopup.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    #threatInfoPopup .popup-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    }
+
+    #threatInfoPopup .popup-icon {
+      font-size: 48px;
+      filter: drop-shadow(0 4px 12px rgba(0, 212, 255, 0.4));
+      animation: cyber-pulse 2s ease-in-out infinite;
+    }
+
+    #threatInfoPopup .popup-title-section {
+      flex: 1;
+    }
+
+    #threatInfoPopup .popup-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #00d4ff;
+      margin: 0 0 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    }
+
+    #threatInfoPopup .popup-risk-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    #threatInfoPopup .popup-risk-badge.critical {
+      background: rgba(255, 0, 85, 0.15);
+      color: #ff0055;
+      border: 1px solid rgba(255, 0, 85, 0.4);
+    }
+
+    #threatInfoPopup .popup-risk-badge.high {
+      background: rgba(255, 153, 0, 0.15);
+      color: #ff9900;
+      border: 1px solid rgba(255, 153, 0, 0.4);
+    }
+
+    #threatInfoPopup .popup-risk-badge.safe {
+      background: rgba(0, 212, 255, 0.15);
+      color: #00d4ff;
+      border: 1px solid rgba(0, 212, 255, 0.4);
+    }
+
+    #threatInfoPopup .popup-confidence {
+      font-size: 12px;
+      color: #8cc9e0;
+      margin-left: 8px;
+    }
+
+    #threatInfoPopup .popup-description {
+      color: #cdefff;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding: 16px;
+      background: rgba(0, 212, 255, 0.05);
+      border-left: 3px solid rgba(0, 212, 255, 0.4);
+      border-radius: 6px;
+    }
+
+    #threatInfoPopup .popup-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #00d4ff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 16px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #threatInfoPopup .popup-section-title::before {
+      content: '▸';
+      color: #00d4ff;
+      font-size: 16px;
+    }
+
+    #threatInfoPopup .popup-details-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px 0;
+    }
+
+    #threatInfoPopup .popup-details-list li {
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      background: rgba(0, 212, 255, 0.08);
+      border-left: 2px solid #00d4ff;
+      border-radius: 4px;
+      color: #bcdff0;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #threatInfoPopup .popup-details-list li::before {
+      content: '●';
+      color: #00d4ff;
+      font-size: 10px;
+    }
+
+    #threatInfoPopup .popup-analysis-grid {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    #threatInfoPopup .analysis-item {
+      background: rgba(0, 212, 255, 0.05);
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 212, 255, 0.15);
+    }
+
+    #threatInfoPopup .analysis-label {
+      font-size: 11px;
+      color: #8cc9e0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    #threatInfoPopup .analysis-value {
+      font-size: 13px;
+      color: #cdefff;
+      margin-bottom: 4px;
+    }
+
+    #threatInfoPopup .analysis-status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #threatInfoPopup .analysis-status.MALICIOUS,
+    #threatInfoPopup .analysis-status.CRITICAL {
+      background: rgba(255, 0, 85, 0.2);
+      color: #ff0055;
+    }
+
+    #threatInfoPopup .analysis-status.SUSPICIOUS,
+    #threatInfoPopup .analysis-status.ANOMALOUS {
+      background: rgba(255, 153, 0, 0.2);
+      color: #ff9900;
+    }
+
+    #threatInfoPopup .analysis-status.VERIFIED,
+    #threatInfoPopup .analysis-status.SAFE,
+    #threatInfoPopup .analysis-status.PASSED {
+      background: rgba(0, 255, 136, 0.2);
+      color: #00ff88;
+    }
+
+    #threatInfoPopup .analysis-status.UNKNOWN,
+    #threatInfoPopup .analysis-status.AI_DETECTED {
+      background: rgba(147, 51, 234, 0.2);
+      color: #9333ea;
+    }
+
+    #threatInfoPopup .popup-prevention {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 153, 204, 0.05));
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: #cdefff;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    #threatInfoPopup .popup-prevention strong {
+      color: #00d4ff;
+      font-weight: 700;
+    }
+
+    /* Sample button hover effect */
+    .sample-btn {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .sample-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.2);
+    }
+
+    /* Login Button Styles */
+    .login-button {
+      padding: 10px 24px;
+      background: transparent;
+      border: 2px solid rgba(0, 212, 255, 0.5);
+      color: #00d4ff;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      margin-right: 12px;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(4px);
+    }
+
+    .login-button:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: #00d4ff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.2);
+    }
+
+    .login-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2);
+    }
+
+    /* Parallax-friendly transforms */
+    .parallax {
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="bgCanvas" aria-hidden="true"></canvas>
+  <div id="scanLayer" aria-hidden="true"></div>
+  <!-- Page Transition Overlay -->
+  <div id="pageTransition" aria-hidden="true"></div>
+  <!-- Page Loader - Ultra Advanced AI Simulation -->
+  <div id="pageLoader">
+    <div class="loader-particles" id="loaderParticles"></div>
+    <div class="loader-bg-scan">
+      <div class="scan-bg-line" style="top: 15%;"></div>
+      <div class="scan-bg-line" style="top: 30%;"></div>
+      <div class="scan-bg-line" style="top: 45%;"></div>
+      <div class="scan-bg-line" style="top: 60%;"></div>
+      <div class="scan-bg-line" style="top: 75%;"></div>
+      <div class="scan-bg-line" style="top: 90%;"></div>
+    </div>
+    <div class="loader-content">
+      <div class="loader-logo">⚔️</div>
+      <div class="loader-text">SAFE-NET</div>
+      <div class="loader-status" id="loaderStatus">NEURAL NETWORKS INITIALIZING...</div>
+
+      <div class="scan-container">
+        <div class="scan-line"></div>
+        <div class="threat-items">
+          <div class="threat-item">
+            <div class="threat-icon">📊</div>
+            <div class="threat-label">Analyzing</div>
+          </div>
+          <div class="threat-item">
+            <div class="threat-icon">🔍</div>
+            <div class="threat-label">Scanning</div>
+          </div>
+          <div class="threat-item">
+            <div class="threat-icon">🛡️</div>
+            <div class="threat-label">Protecting</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-wrapper">
+        <div class="progress-label">
+          <span>THREAT DATABASE SYNC</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="loader-bar">
+          <div class="loader-progress"></div>
+        </div>
+      </div>
+
+      <div class="loader-footer">
+        <span class="footer-item" id="footerItem1">Neural networks loaded</span>
+        <span class="footer-item" id="footerItem2">Patterns indexed</span>
+        <span class="footer-item" id="footerItem3">Real-time protection armed</span>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <div class="logo">
+          <span class="logo-icon">⚔️</span>
+          <span class="logo-text">SAFE<span class="ai-text">-NET</span></span>
+        </div>
+        <div class="nav-links">
+          <a href="#home" class="nav-link active">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#detection" class="nav-link">Detection</a>
+          <a href="#scenarios" class="nav-link">Scenarios</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <a href="#" class="profile-icon" id="profileIcon" style="display: none;" title="My Profile">
+            <span
+              style="font-size: 24px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 153, 204, 0.15)); border: 1px solid rgba(0, 212, 255, 0.4); border-radius: 50%; transition: all 0.3s ease;">👤</span>
+          </a>
+          <button class="login-button" id="authBtn">🔐 Login</button>
+          <button class="cta-button" id="getStarted" onclick="location.href='safe.html'">🚀 Get Started</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="cyber-grid"></div>
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Protect Your Business from
+          <span class="gradient-text">Cyber Threats</span>
+        </h1>
+        <p class="hero-subtitle">
+          Advanced AI-powered detection system that identifies phishing attacks
+          and cyber fraud in real-time with 99.8% accuracy
+        </p>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number">99.8%</span>
+            <span class="stat-label">Detection Rate</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">0.2ms</span>
+            <span class="stat-label">Response Time</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">50K+</span>
+            <span class="stat-label">Protected Users</span>
+          </div>
+        </div>
+        <div class="hero-buttons">
+          <button class="cta-button" id="getStarted" onclick="location.href='safe.html'">🚀 Get Started</button>
+          <button class="secondary-button"
+            onclick="window.open('https://youtu.be/18f1wX5457g?si=7p7p7p7p7p7p7p7p', '_blank')">
+            Watch Demo
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <div class="container">
+      <h2 class="section-title">
+        Understanding <span class="text-primary">Cyber Threats</span>
+      </h2>
+
+      <div class="about-grid">
+        <div class="about-card card-glow">
+          <div class="card-icon">🎯</div>
+          <h3>Phishing Attacks</h3>
+          <p>
+            Deceptive emails designed to trick users into revealing sensitive
+            information. Our AI analyzes sender patterns, URL authenticity, and
+            content anomalies to detect phishing attempts before they cause damage.
+          </p>
+          <ul class="threat-indicators">
+            <li>Spoofed email addresses</li>
+            <li>Malicious URLs</li>
+            <li>Social engineering tactics</li>
+            <li>Credential harvesting</li>
+          </ul>
+        </div>
+
+        <div class="about-card card-glow">
+          <div class="card-icon">💳</div>
+          <h3>Fraud Detection</h3>
+          <p>
+            Real-time monitoring of transactions and account activities to identify
+            fraudulent behavior. Machine learning models track unusual patterns,
+            unauthorized access attempts, and suspicious payment activities.
+          </p>
+          <ul class="threat-indicators">
+            <li>Identity theft</li>
+            <li>Payment fraud</li>
+            <li>Account takeover</li>
+            <li>Unauthorized transactions</li>
+          </ul>
+        </div>
+
+        <div class="about-card card-glow">
+          <div class="card-icon">🔍</div>
+          <h3>Advanced Analytics</h3>
+          <p>
+            Deep learning algorithms analyze behavioral patterns, device fingerprints,
+            and network traffic to uncover sophisticated attacks. Our system learns
+            and adapts to new threat vectors continuously.
+          </p>
+          <ul class="threat-indicators">
+            <li>Behavioral analysis</li>
+            <li>Anomaly detection</li>
+            <li>Network forensics</li>
+            <li>Threat intelligence</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="features-section">
+        <h3 class="features-title">Why Choose SAFE-NET?</h3>
+        <div class="features-list">
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div>
+              <h4>AI-Powered Detection</h4>
+              <p>Machine learning models trained on millions of threat samples</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div>
+              <h4>Real-Time Protection</h4>
+              <p>Instant threat identification and response within milliseconds</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div>
+              <h4>Zero Trust Architecture</h4>
+              <p>Verify every access attempt with multi-layer security protocols</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div>
+              <h4>24/7 Monitoring</h4>
+              <p>Continuous surveillance of all security events and anomalies</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div>
+              <h4>Compliance Ready</h4>
+              <p>GDPR, HIPAA, and SOC 2 compliant security infrastructure</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div>
+              <h4>Incident Response</h4>
+              <p>Automated response mechanisms and detailed breach analysis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Detection Demo -->
+  <section id="detection" class="detection-demo">
+    <div class="container">
+
+      <!-- Quick Test Samples removed -->
+    </div>
+  </section>
+
+  <!-- Threat Info Popup removed -->
+
+  <!-- Real-World Scenarios -->
+  <section id="scenarios" class="scenarios">
+    <div class="container">
+      <h2 class="section-title">
+        Real-World <span class="text-primary">Threat Scenarios</span>
+      </h2>
+
+      <div class="scenarios-grid">
+        <!-- Scenario 1 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <span class="scenario-number">01</span>
+            <span class="scenario-badge critical">CRITICAL</span>
+          </div>
+          <h3>Executive Impersonation Attack</h3>
+          <div class="scenario-description">
+            <p>
+              <strong>The Threat:</strong> Attacker spoofs CEO email address requesting
+              urgent wire transfer of $250,000 to supplier.
+            </p>
+            <div class="scenario-indicators">
+              <div class="indicator red">Spoofed Domain</div>
+              <div class="indicator red">Urgency Tactics</div>
+              <div class="indicator red">Unusual Request</div>
+            </div>
+            <p>
+              <strong>Our Detection:</strong> SAFE-NET flags sender domain
+              mismatch, analyzes writing patterns, detects social engineering
+              tactics, and alerts finance team immediately.
+            </p>
+            <div class="prevention-tips">
+              <h4>Prevention:</h4>
+              <ul>
+                <li>Verify sender email domain carefully</li>
+                <li>Confirm unusual requests through alternative channels</li>
+                <li>Implement payment authorization procedures</li>
+                <li>Enable DMARC/SPF email authentication</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scenario 2 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <span class="scenario-number">02</span>
+            <span class="scenario-badge high">HIGH</span>
+          </div>
+          <h3>Credential Harvesting via Fake Portal</h3>
+          <div class="scenario-description">
+            <p>
+              <strong>The Threat:</strong> Email with link to fake bank login portal
+              designed to steal username and password.
+            </p>
+            <div class="scenario-indicators">
+              <div class="indicator red">Malicious URL</div>
+              <div class="indicator red">SSL Cert Mismatch</div>
+              <div class="indicator orange">Phishing Form</div>
+            </div>
+            <p>
+              <strong>Our Detection:</strong> AI scans URLs against known phishing
+              databases, validates SSL certificates, analyzes landing page
+              similarities to legitimate sites, and blocks credential entry.
+            </p>
+            <div class="prevention-tips">
+              <h4>Prevention:</h4>
+              <ul>
+                <li>Bookmark official websites</li>
+                <li>Check SSL certificates on login pages</li>
+                <li>Use password managers to avoid mistyped URLs</li>
+                <li>Enable 2FA/MFA for critical accounts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scenario 3 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <span class="scenario-number">03</span>
+            <span class="scenario-badge medium">MEDIUM</span>
+          </div>
+          <h3>Payment Fraud Detection</h3>
+          <div class="scenario-description">
+            <p>
+              <strong>The Threat:</strong> Unauthorized transaction detected from
+              user account in different geographic location within seconds.
+            </p>
+            <div class="scenario-indicators">
+              <div class="indicator orange">Geo Anomaly</div>
+              <div class="indicator orange">Timing Mismatch</div>
+              <div class="indicator orange">New Merchant</div>
+            </div>
+            <p>
+              <strong>Our Detection:</strong> AI correlates device location, transaction
+              velocity, merchant risk profile, and spending patterns to flag
+              anomalous activities and trigger verification.
+            </p>
+            <div class="prevention-tips">
+              <h4>Prevention:</h4>
+              <ul>
+                <li>Monitor bank statements regularly</li>
+                <li>Set transaction alerts</li>
+                <li>Use secure payment methods</li>
+                <li>Keep devices updated with security patches</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scenario 4 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <span class="scenario-number">04</span>
+            <span class="scenario-badge medium">MEDIUM</span>
+          </div>
+          <h3>Social Engineering via Support Channel</h3>
+          <div class="scenario-description">
+            <p>
+              <strong>The Threat:</strong> Attacker impersonates support staff to trick
+              user into sharing sensitive information or account access.
+            </p>
+            <div class="scenario-indicators">
+              <div class="indicator orange">Identity Spoofing</div>
+              <div class="indicator orange">Social Engineering</div>
+              <div class="indicator orange">Urgency Creation</div>
+            </div>
+            <p>
+              <strong>Our Detection:</strong> AI analyzes communication patterns,
+              verifies staff identity, detects social engineering tactics, and
+              logs all interactions for compliance review.
+            </p>
+            <div class="prevention-tips">
+              <h4>Prevention:</h4>
+              <ul>
+                <li>Never share passwords or personal info with support</li>
+                <li>Verify support staff identity independently</li>
+                <li>Use official support channels only</li>
+                <li>Report suspicious requests immediately</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2 class="section-title">
+        Get in <span class="text-primary">Touch</span>
+      </h2>
+
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="info-card">
+            <div class="info-icon">📧</div>
+            <h3>Email</h3>
+            <p>nforspeed492@gmail.com</p>
+            <p class="info-detail">Response within 4 hours</p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">📞</div>
+            <h3>Phone</h3>
+            <p>+91 9462534117</p>
+            <p class="info-detail">24/7 Support Available</p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">📍</div>
+            <h3>Campus</h3>
+            <p>PIET Jaipur</p>
+            <p class="info-detail">Rajasthan, India</p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">🔗</div>
+            <h3>Social</h3>
+            <div class="social-links">
+              <a href="https://www.linkedin.com/in/divyansh-tak-b0334b362?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="https://github.com/divyansh10011" class="social-link" target="_blank"
+                rel="noopener noreferrer">GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required placeholder="Your name" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required placeholder="your@email.com" />
+          </div>
+
+          <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" placeholder="Your company" />
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" required placeholder="How can we help?" />
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Your message here..."></textarea>
+          </div>
+
+          <button type="submit" class="submit-button">Send Message</button>
+          <div id="formMessage" class="form-message"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- AI Assistant Bubble removed -->
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>SAFE-NET</h4>
+          <p>Protecting businesses from cyber threats with advanced AI detection</p>
+        </div>
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#detection">Detection System</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Documentation</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Compliance</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 SAFE-NET. All rights reserved. | Professional Cybersecurity Solutions</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================================================
+    // ADVANCED DETECTION SYSTEM - INTEGRATED FROM SCRIPT.JS
+    // ============================================================================
+
+    // Global Configuration
+    const CONFIG = {
+      apiDelay: 300,
+      scanDuration: 3000,
+      alertThreshold: 0.7,
+      animationDuration: 600
+    };
+
+    // State Management
+    let appState = {
+      isScanning: false,
+      alertLevel: 'safe',
+      detectionHistory: [],
+      networkStats: {
+        packets: 0,
+        threats: 0,
+        blocked: 0
+      }
+    };
+
+    // Quick Test Samples JavaScript removed
+
+    // Enhanced contact form handler
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formInputs = this.querySelectorAll('input, textarea');
+        const submitBtn = this.querySelector('.submit-button');
+        const originalText = submitBtn.textContent;
+
+        // Validate all fields
+        let isValid = true;
+        formInputs.forEach(input => {
+          if (!input.value.trim()) isValid = false;
+        });
+
+        if (!isValid) {
+          submitBtn.style.animation = 'shake 0.5s ease-in-out';
+          setTimeout(() => {
+            submitBtn.style.animation = '';
+          }, 500);
+          return;
+        }
+
+        submitBtn.innerHTML = '<div class="loading" style="display: inline-block; margin-right: 10px;"></div> Sending...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+          submitBtn.innerHTML = '✓ Message Sent Successfully!';
+          submitBtn.style.background = 'rgba(0, 212, 255, 0.2)';
+          submitBtn.style.color = '#00d4ff';
+
+          const formMessage = document.getElementById('formMessage');
+          formMessage.textContent = '✓ Thank you! Our team will contact you shortly.';
+          formMessage.style.color = '#00d4ff';
+
+          // Form animation
+          formInputs.forEach((input, index) => {
+            setTimeout(() => {
+              input.style.opacity = '0.7';
+            }, index * 50);
+          });
+
+          setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = '';
+            submitBtn.style.color = '';
+            submitBtn.disabled = false;
+            formMessage.textContent = '';
+            formInputs.forEach(input => {
+              input.style.opacity = '1';
+            });
+            this.reset();
+          }, 3000);
+        }, 1500);
+      });
+    }
+
+    // Interactive scenario card expansion with detailed assessments
+    document.querySelectorAll('.scenario-card').forEach(card => {
+      card.addEventListener('click', function () {
+        const description = this.querySelector('.scenario-description');
+        const indicators = this.querySelectorAll('.indicator');
+        const preventionTips = this.querySelector('.prevention-tips');
+
+        // Toggle expanded state
+        this.classList.toggle('expanded');
+
+        if (this.classList.contains('expanded')) {
+          // Expand the card
+          description.style.maxHeight = description.scrollHeight + 'px';
+          if (preventionTips) preventionTips.style.display = 'block';
+
+          // Add detailed assessment content
+          if (!this.querySelector('.detailed-assessment')) {
+            const assessment = document.createElement('div');
+            assessment.className = 'detailed-assessment';
+            assessment.innerHTML = `
+                <h4 style="color: #00d4ff; margin: 20px 0 10px 0; font-size: 14px;">🔍 Detailed Risk Assessment</h4>
+                <div style="background: rgba(0, 212, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(0, 212, 255, 0.2);">
+                  <div style="display: grid; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="color: #8cc9e0;">Attack Vector:</span>
+                      <span style="color: #00d4ff; font-weight: 600;">${this.querySelector('h3').textContent.includes('Executive') ? 'Email Spoofing' : this.querySelector('h3').textContent.includes('Credential') ? 'Phishing Portal' : this.querySelector('h3').textContent.includes('Payment') ? 'Transaction Anomaly' : 'Social Engineering'}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="color: #8cc9e0;">Detection Confidence:</span>
+                      <span style="color: #00ff88; font-weight: 600;">${this.querySelector('.scenario-badge').classList.contains('critical') ? '98%' : this.querySelector('.scenario-badge').classList.contains('high') ? '95%' : '87%'}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="color: #8cc9e0;">Response Time:</span>
+                      <span style="color: #00ff88; font-weight: 600;">${this.querySelector('.scenario-badge').classList.contains('critical') ? '< 1 second' : '< 5 seconds'}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="color: #8cc9e0;">Business Impact:</span>
+                      <span style="color: ${this.querySelector('.scenario-badge').classList.contains('critical') ? '#ff0055' : this.querySelector('.scenario-badge').classList.contains('high') ? '#ff9900' : '#ffff00'}; font-weight: 600;">
+                        ${this.querySelector('.scenario-badge').classList.contains('critical') ? 'HIGH' : this.querySelector('.scenario-badge').classList.contains('high') ? 'MEDIUM' : 'LOW'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              `;
+            description.appendChild(assessment);
+          }
+
+          // Animate indicators
+          indicators.forEach((indicator, index) => {
+            setTimeout(() => {
+              indicator.style.animation = `slideIn 0.5s ease-out ${index * 0.1}s both`;
+              indicator.style.transform = 'scale(1.1)';
+            }, index * 100);
+          });
+
+          // Add glow effect
+          this.style.boxShadow = '0 20px 60px rgba(0, 212, 255, 0.4)';
+        } else {
+          // Collapse the card
+          description.style.maxHeight = '200px';
+          if (preventionTips) preventionTips.style.display = 'none';
+
+          // Remove detailed assessment
+          const assessment = this.querySelector('.detailed-assessment');
+          if (assessment) assessment.remove();
+
+          // Reset indicators
+          indicators.forEach(indicator => {
+            indicator.style.animation = '';
+            indicator.style.transform = '';
+          });
+
+          // Remove glow effect
+          this.style.boxShadow = '';
+        }
+      });
+    });
+
+    // Animated statistics counters with scroll trigger
+    function animateCounter(element, target) {
+      let current = 0;
+      const increment = target / 60;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          const suffix = element.textContent.includes('%') ? '%' :
+            element.textContent.includes('ms') ? 'ms' : 'K+';
+          element.textContent = target + suffix;
+          clearInterval(timer);
+        } else {
+          const displayValue = Math.floor(current);
+          const suffix = element.textContent.includes('%') ? '%' :
+            element.textContent.includes('ms') ? 'ms' : 'K+';
+          element.textContent = displayValue + suffix;
+        }
+      }, 30);
+    }
+
+    // Enhanced Intersection Observer for dynamic interactions
+    const dynamicObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Trigger animations and popups on scroll
+          const element = entry.target;
+
+          // Stat cards animation
+          if (element.classList.contains('stat-card') && !element.classList.contains('counted')) {
+            element.classList.add('counted');
+            element.classList.add('scan-effect');
+            const stat = element.querySelector('.stat-number');
+            if (stat) {
+              const text = stat.textContent;
+              const number = parseFloat(text);
+              animateCounter(stat, number);
+            }
+          }
+
+          // About cards hover effect on scroll
+          if (element.classList.contains('about-card')) {
+            setTimeout(() => {
+              element.style.transform = 'translateY(-10px) scale(1.02)';
+              element.style.boxShadow = '0 20px 40px rgba(0, 212, 255, 0.2)';
+              setTimeout(() => {
+                element.style.transform = '';
+                element.style.boxShadow = '';
+              }, 2000);
+            }, 500);
+          }
+
+          // Feature items animation
+          if (element.classList.contains('feature-item')) {
+            element.style.animation = 'slideInUp 0.8s ease-out forwards';
+          }
+
+          // Scenario cards auto-expand on scroll
+          if (element.classList.contains('scenario-card')) {
+            setTimeout(() => {
+              const description = element.querySelector('.scenario-description');
+              const indicators = element.querySelectorAll('.indicator');
+              const preventionTips = element.querySelector('.prevention-tips');
+
+              if (description) description.style.maxHeight = description.scrollHeight + 'px';
+              if (preventionTips) preventionTips.style.display = 'block';
+
+              // Add detailed assessment content
+              if (!element.querySelector('.detailed-assessment')) {
+                const assessment = document.createElement('div');
+                assessment.className = 'detailed-assessment';
+                assessment.innerHTML = `
+                    <h4 style="color: #00d4ff; margin: 20px 0 10px 0; font-size: 14px;">🔍 Detailed Risk Assessment</h4>
+                    <div style="background: rgba(0, 212, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(0, 212, 255, 0.2);">
+                      <div style="display: grid; gap: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="color: #8cc9e0;">Attack Vector:</span>
+                          <span style="color: #00d4ff; font-weight: 600;">${element.querySelector('h3').textContent.includes('Executive') ? 'Email Spoofing' : element.querySelector('h3').textContent.includes('Credential') ? 'Phishing Portal' : element.querySelector('h3').textContent.includes('Payment') ? 'Transaction Anomaly' : 'Social Engineering'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="color: #8cc9e0;">Detection Confidence:</span>
+                          <span style="color: #00ff88; font-weight: 600;">${element.querySelector('.scenario-badge').classList.contains('critical') ? '98%' : element.querySelector('.scenario-badge').classList.contains('high') ? '95%' : '87%'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="color: #8cc9e0;">Response Time:</span>
+                          <span style="color: #00ff88; font-weight: 600;">${element.querySelector('.scenario-badge').classList.contains('critical') ? '< 1 second' : '< 5 seconds'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="color: #8cc9e0;">Business Impact:</span>
+                          <span style="color: ${element.querySelector('.scenario-badge').classList.contains('critical') ? '#ff0055' : element.querySelector('.scenario-badge').classList.contains('high') ? '#ff9900' : '#ffff00'}; font-weight: 600;">
+                            ${element.querySelector('.scenario-badge').classList.contains('critical') ? 'HIGH' : element.querySelector('.scenario-badge').classList.contains('high') ? 'MEDIUM' : 'LOW'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                element.querySelector('.scenario-description').appendChild(assessment);
+              }
+
+              // Animate indicators
+              indicators.forEach((indicator, index) => {
+                setTimeout(() => {
+                  indicator.style.animation = `slideIn 0.5s ease-out ${index * 0.1}s both`;
+                  indicator.style.transform = 'scale(1.1)';
+                }, index * 100);
+              });
+
+              // Add glow effect
+              element.style.boxShadow = '0 20px 60px rgba(0, 212, 255, 0.4)';
+            }, 1000);
+          }
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '0px 0px -100px 0px' });
+
+    // Observe all interactive elements
+    document.querySelectorAll('.stat-card, .about-card, .feature-item, .scenario-card').forEach(element => {
+      dynamicObserver.observe(element);
+    });
+
+    // Enhanced hover interactions removed (tooltips removed)
+
+    // Dynamic particle effects on scroll
+    let scrollParticles = [];
+    window.addEventListener('scroll', () => {
+      if (Math.random() > 0.85) {
+        const particle = document.createElement('div');
+        particle.className = 'scroll-particle';
+        particle.style.cssText = `
+            position: fixed;
+            width: ${Math.random() * 8 + 4}px;
+            height: ${Math.random() * 8 + 4}px;
+            background: rgba(0, 212, 255, ${Math.random() * 0.6 + 0.4});
+            border-radius: 50%;
+            left: ${Math.random() * 100}vw;
+            top: ${Math.random() * 100}vh;
+            pointer-events: none;
+            z-index: 1;
+            animation: scrollFloat 3s ease-out forwards;
+          `;
+
+        document.body.appendChild(particle);
+        scrollParticles.push(particle);
+
+        setTimeout(() => {
+          particle.style.opacity = '0';
+          setTimeout(() => {
+            particle.remove();
+            scrollParticles = scrollParticles.filter(p => p !== particle);
+          }, 500);
+        }, 2500);
+      }
+    });
+
+    // Add scroll float animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes scrollFloat {
+          0% { transform: translateY(0) scale(1); opacity: 1; }
+          50% { transform: translateY(-20px) scale(1.2); opacity: 0.8; }
+          100% { transform: translateY(-40px) scale(0); opacity: 0; }
+        }
+        .dynamic-tooltip {
+          animation: tooltipPulse 2s ease-in-out infinite;
+        }
+        @keyframes tooltipPulse {
+          0%, 100% { transform: translate(-50%, -100%) scale(1); }
+          50% { transform: translate(-50%, -100%) scale(1.05); }
+        }
+      `;
+    document.head.appendChild(style);
+
+    // Enhanced particle system
+    function createParticle(x, y) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = x + 'px';
+      particle.style.top = y + 'px';
+      particle.style.width = Math.random() * 12 + 3 + 'px';
+      particle.style.height = particle.style.width;
+
+      const colors = ['rgba(0, 212, 255, 0.8)', 'rgba(0, 153, 204, 0.8)', 'rgba(0, 100, 150, 0.8)'];
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.borderRadius = '50%';
+      particle.style.pointerEvents = 'none';
+      particle.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px currentColor`;
+
+      document.body.appendChild(particle);
+
+      const duration = Math.random() * 3000 + 1500;
+      const offsetX = (Math.random() - 0.5) * 200;
+      const offsetY = -Math.random() * 200 - 100;
+
+      const animation = particle.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        { transform: `translate(${offsetX}px, ${offsetY}px) scale(0)`, opacity: 0 }
+      ], duration);
+
+      animation.onfinish = () => particle.remove();
+    }
+
+    // Mouse tracking with particle effects
+    document.addEventListener('mousemove', (e) => {
+      if (Math.random() > 0.96) {
+        createParticle(e.clientX, e.clientY);
+      }
+    });
+
+    // Click particles
+    document.addEventListener('click', (e) => {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          createParticle(e.clientX, e.clientY);
+        }, i * 50);
+      }
+    });
+
+    // Active nav link tracking with smooth transitions
+    window.addEventListener('scroll', () => {
+      let current = '';
+      const sections = document.querySelectorAll('section');
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= sectionTop - 300) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').slice(1) === current) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Smooth scroll for nav links with easing
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Enhanced page transitions, parallax and AI assistant
+    // Create page mask element (used for ultra transitions)
+    (function () {
+      const mask = document.createElement('div');
+      mask.id = 'pageMask';
+      mask.innerHTML = '<div class="maskCircle"></div>';
+      document.body.appendChild(mask);
+
+      function reveal(xPct = 50, yPct = 50, cb) {
+        mask.style.setProperty('--mx', xPct + '%');
+        mask.style.setProperty('--my', yPct + '%');
+        mask.classList.add('revealing');
+        setTimeout(() => {
+          if (typeof cb === 'function') cb();
+          setTimeout(() => mask.classList.remove('revealing'), 420);
+        }, 260);
+      }
+
+      // Override nav link behavior to use page transition effect
+      document.querySelectorAll('.nav-link, a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if (!href || !href.startsWith('#')) return;
+          e.preventDefault();
+
+          const pageTransition = document.getElementById('pageTransition');
+          const target = document.querySelector(href);
+
+          // Fade in transition overlay
+          pageTransition.classList.add('active');
+
+          // Navigate after transition starts
+          setTimeout(() => {
+            if (target) {
+              window.scrollTo({ top: 0, behavior: 'instant' });
+              target.scrollIntoView({ behavior: 'instant', block: 'start' });
+            }
+            // Fade out transition overlay
+            pageTransition.classList.remove('active');
+          }, 220);
+        });
+      });
+    })();
+
+    // Pointer-driven parallax for hero and subtle page layers - DISABLED
+    // (function(){
+    //   const hero = document.querySelector('.hero-content');
+    //   const grid = document.querySelector('.cyber-grid');
+    //   const canvas = document.getElementById('bgCanvas');
+    //   let w = innerWidth, h = innerHeight;
+    //
+    //   function onMove(e){
+    //     const x = (e.clientX / w - 0.5) * 2; // -1..1
+    //     const y = (e.clientY / h - 0.5) * 2;
+    //     if (hero) hero.style.transform = `translate3d(${x*8}px, ${y*8}px, 0) rotateY(${x*3}deg)`;
+    //     if (grid) grid.style.transform = `translate3d(${x*20}px, ${y*12}px, 0)`;
+    //     if (canvas) canvas.style.transform = `translate3d(${x*6}px, ${y*6}px, 0)`;
+    //   }
+    //
+    //   addEventListener('mousemove', (e) => {
+    //     requestAnimationFrame(() => onMove(e));
+    //   });
+    // })();
+
+    // AI Assistant removed
+
+    // Device orientation support for mobile parallax (gentle, no shake)
+    window.addEventListener('deviceorientation', (ev) => {
+      const hero = document.querySelector('.hero-content');
+      const gx = ev.gamma || 0;
+      const by = ev.beta || 0;
+      const tx = Math.max(-8, Math.min(8, gx));
+      const ty = Math.max(-6, Math.min(6, by - 5));
+      if (hero) hero.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+    }, { passive: true });
+
+    // Page loader fade-out on load with ultra-advanced progress tracking
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('pageLoader');
+      const progressPercent = document.getElementById('progressPercent');
+      let progress = 0;
+
+      // Simulate realistic AI load progression with logarithmic easing
+      const interval = setInterval(() => {
+        const remaining = 100 - progress;
+        const increment = remaining * (Math.random() * 0.15 + 0.05);
+        progress = Math.min(progress + increment, 96);
+
+        if (progressPercent) progressPercent.textContent = Math.floor(progress) + '%';
+
+        if (progress >= 96) {
+          clearInterval(interval);
+          progress = 100;
+          if (progressPercent) progressPercent.textContent = '100%';
+
+          // Fade out loader
+          setTimeout(() => {
+            if (loader) {
+              loader.style.transition = 'all 0.6s cubic-bezier(.2,.9,.2,1)';
+              loader.classList.add('fade-out');
+            }
+          }, 400);
+        }
+      }, 80);
+    });
+
+    // Close detection result and modal on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const dr = document.getElementById('detectionResult');
+        if (dr) dr.style.display = 'none';
+        const demoModal = document.getElementById('demoModal');
+        if (demoModal && demoModal.getAttribute('aria-hidden') === 'false') {
+          demoModal.style.display = 'none';
+          demoModal.setAttribute('aria-hidden', 'true');
+        }
+      }
+    });
+
+    // Real-time network statistics updates
+    (function () {
+      const packetsSeen = document.getElementById('packetsSeen');
+      const threatsFound = document.getElementById('threatsFound');
+      const blockRate = document.getElementById('blockRate');
+      const alertLevel = document.getElementById('alertLevel');
+
+      let totalPackets = 0;
+      let totalThreats = 0;
+      let totalBlocked = 0;
+      let currentAlertLevel = 'SAFE';
+
+      // Initialize with some base values
+      if (packetsSeen) packetsSeen.textContent = '0';
+      if (threatsFound) threatsFound.textContent = '0';
+      if (blockRate) blockRate.textContent = '0%';
+      if (alertLevel) alertLevel.textContent = 'SAFE';
+
+      // Update stats every 2-5 seconds
+      setInterval(() => {
+        // Simulate network activity
+        const newPackets = Math.floor(Math.random() * 500) + 100;
+        const newThreats = Math.random() > 0.8 ? Math.floor(Math.random() * 3) + 1 : 0;
+        const newBlocked = newThreats > 0 ? Math.floor(Math.random() * newThreats) + 1 : 0;
+
+        totalPackets += newPackets;
+        totalThreats += newThreats;
+        totalBlocked += newBlocked;
+
+        // Update display with animation
+        if (packetsSeen) {
+          packetsSeen.style.transform = 'scale(1.1)';
+          packetsSeen.textContent = totalPackets.toLocaleString();
+          setTimeout(() => packetsSeen.style.transform = '', 200);
+        }
+
+        if (threatsFound && newThreats > 0) {
+          threatsFound.style.transform = 'scale(1.2)';
+          threatsFound.style.color = '#ff9900';
+          threatsFound.textContent = totalThreats;
+          setTimeout(() => {
+            threatsFound.style.transform = '';
+            threatsFound.style.color = '';
+          }, 500);
+        }
+
+        // Calculate and update block rate
+        if (blockRate) {
+          const rate = totalPackets > 0 ? Math.min(100, Math.floor((totalBlocked / totalPackets) * 100)) : 0;
+          blockRate.textContent = rate + '%';
+
+          if (rate > 80) {
+            blockRate.style.color = '#00ff88';
+          } else if (rate > 50) {
+            blockRate.style.color = '#ff9900';
+          } else {
+            blockRate.style.color = '#ff0055';
+          }
+        }
+
+        // Update alert level based on threat activity
+        if (alertLevel) {
+          let newLevel = 'SAFE';
+          if (totalThreats > 10) {
+            newLevel = 'CRITICAL';
+          } else if (totalThreats > 5) {
+            newLevel = 'WARNING';
+          }
+
+          if (newLevel !== currentAlertLevel) {
+            currentAlertLevel = newLevel;
+            alertLevel.style.animation = 'pulse 0.5s ease-in-out';
+            alertLevel.textContent = newLevel;
+            alertLevel.style.color = newLevel === 'CRITICAL' ? '#ff0055' : newLevel === 'WARNING' ? '#ff9900' : '#00d4ff';
+            setTimeout(() => alertLevel.style.animation = '', 500);
+          }
+        }
+      }, Math.random() * 3000 + 2000); // Random interval between 2-5 seconds
+    })();
+
+    // Keyboard shortcuts for enhanced accessibility
+    (function () {
+      const shortcuts = {
+        'Control+k': () => {
+          // Quick search - focus on detection section
+          document.querySelector('#detection').scrollIntoView({ behavior: 'smooth' });
+          showNotification('🔍 Quick search activated - Detection section highlighted', 'info');
+        },
+        'Control+l': () => {
+          // Quick scan - trigger first sample analysis
+          const firstSample = document.querySelector('.sample-btn');
+          if (firstSample) {
+            firstSample.click();
+            showNotification('⚡ Quick scan initiated', 'success');
+          }
+        },
+        'Control+m': () => {
+          // Toggle AI assistant
+          const assistant = document.getElementById('aiAssistant');
+          if (assistant) {
+            assistant.classList.toggle('hidden');
+            showNotification('🤖 AI Assistant toggled', 'info');
+          }
+        },
+        'Control+s': () => {
+          // Start deep scan
+          const scanBtn = document.querySelector('.scan-btn');
+          if (scanBtn && !scanBtn.disabled) {
+            scanBtn.click();
+            showNotification('🔬 Deep scan started', 'warning');
+          }
+        },
+        'Control+h': () => {
+          // Show help overlay
+          showHelpOverlay();
+        },
+        'Escape': () => {
+          // Close any open overlays
+          const overlays = document.querySelectorAll('.modal, .overlay');
+          overlays.forEach(overlay => {
+            if (overlay.style.display !== 'none') {
+              overlay.style.display = 'none';
+              showNotification('✖ Overlay closed', 'info');
+            }
+          });
+        }
+      };
+
+      function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span>${message}</span>
+            </div>
+          `;
+        notification.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: ${type === 'success' ? 'rgba(0, 255, 136, 0.9)' : type === 'warning' ? 'rgba(255, 153, 0, 0.9)' : 'rgba(0, 212, 255, 0.9)'};
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease-out;
+            backdrop-filter: blur(10px);
+          `;
+
+        document.body.appendChild(notification);
+
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+          notification.style.animation = 'slideOutRight 0.3s ease-in';
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      }
+
+      function showHelpOverlay() {
+        const overlay = document.createElement('div');
+        overlay.className = 'help-overlay';
+        overlay.innerHTML = `
+            <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10001; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);" onclick="this.remove()">
+              <div style="background: linear-gradient(135deg, rgba(10,15,35,0.95), rgba(20,25,45,0.95)); border: 1px solid rgba(0,212,255,0.3); border-radius: 16px; padding: 32px; max-width: 500px; color: white;" onclick="event.stopPropagation()">
+                <h3 style="color: #00d4ff; margin-bottom: 20px; text-align: center;">⌨️ Keyboard Shortcuts</h3>
+                <div style="display: grid; gap: 12px;">
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + K</span>
+                    <span style="color: #8cc9e0;">Quick Search (Detection)</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + L</span>
+                    <span style="color: #8cc9e0;">Quick Scan</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + M</span>
+                    <span style="color: #8cc9e0;">Toggle AI Assistant</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + S</span>
+                    <span style="color: #8cc9e0;">Start Deep Scan</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.2);">
+                    <span>Ctrl + H</span>
+                    <span style="color: #8cc9e0;">Show Help</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                    <span>Escape</span>
+                    <span style="color: #8cc9e0;">Close Overlays</span>
+                  </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                  <button style="background: rgba(0,212,255,0.2); border: 1px solid rgba(0,212,255,0.5); color: #00d4ff; padding: 8px 16px; border-radius: 6px; cursor: pointer;" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
+                </div>
+              </div>
+            </div>
+          `;
+        document.body.appendChild(overlay);
+      }
+
+      // Add CSS animations for notifications
+      const style = document.createElement('style');
+      style.textContent = `
+          @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+          @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+          }
+        `;
+      document.head.appendChild(style);
+
+      // Listen for keyboard events
+      document.addEventListener('keydown', (e) => {
+        const key = `${e.ctrlKey ? 'Control+' : ''}${e.key.toLowerCase()}`;
+        if (shortcuts[key]) {
+          e.preventDefault();
+          shortcuts[key]();
+        }
+      });
+
+      // Show initial help hint
+      setTimeout(() => {
+        showNotification('💡 Press Ctrl+H for keyboard shortcuts', 'info');
+      }, 5000);
+    })();
+  </script>
+
+  <!-- Firebase Auth for Login/Logout -->
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDTUKsGpzmJj6zph47s-7ui6gg1H6QKa_E",
+      authDomain: "my-safe-net.firebaseapp.com",
+      projectId: "my-safe-net",
+      storageBucket: "my-safe-net.firebasestorage.app",
+      messagingSenderId: "530467858697",
+      appId: "1:530467858697:web:37d409f7c4c2b7ae0b8bd8",
+      measurementId: "G-9WSFSMMZLR"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Auth state listener
+    auth.onAuthStateChanged((user) => {
+      const authBtn = document.getElementById('authBtn');
+      const profileIcon = document.getElementById('profileIcon');
+
+      if (authBtn) {
+        if (user) {
+          // User is logged in - show logout button and profile icon
+          authBtn.innerHTML = '🚪 Logout';
+          authBtn.onclick = () => {
+            auth.signOut().then(() => {
+              location.reload();
+            }).catch((error) => {
+              console.error('Logout error:', error);
+            });
+          };
+
+          // Show profile icon
+          if (profileIcon) {
+            profileIcon.style.display = 'flex';
+            // Use display name initial or default
+            const displayName = user.displayName || user.email;
+            const initial = displayName ? displayName.charAt(0).toUpperCase() : '👤';
+            profileIcon.querySelector('span').textContent = initial;
+            profileIcon.title = displayName || 'My Profile';
+          }
+        } else {
+          // User is not logged in - show login button, hide profile icon
+          authBtn.innerHTML = '🔐 Login';
+          authBtn.onclick = () => {
+            location.href = 'login.html';
+          };
+
+          // Hide profile icon
+          if (profileIcon) {
+            profileIcon.style.display = 'none';
+          }
+        }
+      }
+    });
+  </script>
+
+  <!-- Contact Form Email Handler -->
+  <script>
+    // Initialize EmailJS with your public key
+    // You need to sign up at https://www.emailjs.com/ and get your keys
+    (function () {
+      emailjs.init("bBQHnef4eBR23M6cr"); // EmailJS public key
+    })();
+
+    // Contact form handler
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const submitBtn = this.querySelector('.submit-button');
+      const formMessage = document.getElementById('formMessage');
+      const originalBtnText = submitBtn.innerHTML;
+
+      // Get form values
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const company = document.getElementById('company').value || 'Not specified';
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
+
+      // Show loading state
+      submitBtn.innerHTML = '<span class="loading"></span> Sending...';
+      submitBtn.disabled = true;
+      formMessage.innerHTML = '';
+
+      // Email template parameters
+      const templateParams = {
+        to_email: 'nforspeed492@gmail.com',
+        subject: subject,
+        from_name: name,
+        from_email: email,
+        company: company,
+        message: message,
+        // Formatted message body
+        message_html: `From ${name},\nEmail ${email},\n\n${message}\n\n\nRegards ${company}`
+      };
+
+      // Send email using EmailJS
+      emailjs.send('service_xo5ry8i', 'template_1wmidbv', templateParams)
+        .then(function (response) {
+          console.log('Email sent successfully!', response);
+          formMessage.innerHTML = '<div style="color: #00ff88; padding: 12px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 8px;">✓ Message sent successfully! We will get back to you soon.</div>';
+          submitBtn.innerHTML = '✓ Sent!';
+          submitBtn.style.background = 'linear-gradient(135deg, #00ff88, #00cc66)';
+
+          // Reset form
+          document.getElementById('contactForm').reset();
+
+          // Reset button after 3 seconds
+          setTimeout(() => {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+            submitBtn.style.background = '';
+          }, 3000);
+        })
+        .catch(function (error) {
+          console.error('Email failed:', error);
+          formMessage.innerHTML = '<div style="color: #ff5588; padding: 12px; background: rgba(255,0,85,0.1); border: 1px solid rgba(255,0,85,0.3); border-radius: 8px;">✗ Failed to send message. Please try again or email us directly.</div>';
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+        });
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+
+</html>
